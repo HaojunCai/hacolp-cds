@@ -9,7 +9,7 @@ The web-mapping pilot project chosen from the Historical Atlas content are the 3
 The re-designed maps in this site use a time-line slider to display changes in population more smoothly and easily than the original layer-checkbox design. This web-map was developed using Mapbox-GL and data-driven layers (https://www.mapbox.com/help/gl-dds-map-tutorial/). The Time slider was adapted from a generic  jQuery slider (https://api.jqueryui.com/slider/) tied to Mapbox GL layer to filter based on Census Division information and the YEAR attribute.<br>
 
 The project web-maps can be seen here: http://mercator.geog.utoronto.ca/georia/mapbox-hacolp <br>
-The code is available in the repository:   <br>
+The code is available in the repository: https://github.com/geohist-ca/hacolp-cds/tree/master/mapbox-hacolp-github  <br>
 
 For convenience, the code for different features developed for this project is also broken out into "template" files, also included in the repository:<br>
 Layer Filter Slider: Code used to filter a Mapbox GL layer using a jQuery slider (HACOLP_template_LayerFilter.html)<br>
