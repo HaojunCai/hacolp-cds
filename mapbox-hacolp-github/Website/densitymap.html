@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>Historical Atlas of Canada</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+  
+    <!-- Bootstrap custom CSS - changes specific to the Bootsrap navigation bar have been made in this .css document. Not in the style section below -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+	
+    <!-- Bootstrap core CSS -->	
+    <script src="assets/js/bootstrap.min.js"></script>
+	
+    <!-- Custom styles for this template -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+  
+    <!-- Mapbox -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+	
+	<!-- css style rules specific to the map. Bootsrap style rules are in the linked css file above  -->
+    <style>
+
+    /* Full Screen Mapbox + Navbar edits */
+
+    html, body {
+    height:100%;
+    width: 100%; 
+    overflow:hidden;     
+    } 
+
+    #mapboxfull {
+      height: 100%;
+      min-height: 100%;
+      margin:0;  
+      box-sizing: border-box;
+      padding-top:55px;
+      z-index:1;
+      position:relative;
+    }
+
+    #map {
+      height:100%; 
+      width:100%
+    }
+	
+  /*Container bottom left*/
+  #console {
+    position: absolute;
+    width: 420px;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: white;
+	bottom:20px;
+	z-index:10000;
+  }
+
+  #console hr {
+    margin-left:-20px; 
+    margin-right:-20px;  
+    color: #123455; 
+    height: 1px; 
+    border: 0; 
+    border-top: 1px solid #ccc; 
+    padding: 0; 
+  }
+  
+  .mapboxgl-popup {
+    max-width: 400px;
+
+  }
+
+  .mapboxgl-popup-content {
+    margin:0;
+    padding:10px;
+    padding-bottom: 0;
+  }
+
+  .mapboxgl-popup-content h5{
+    margin:0;
+    font-size:15px;
+    margin-right:15px;
+    margin-bottom:5px;
+  }
+  
+  #popup > li {
+	border:0;
+	padding:0;
+	margin:0;
+	margin-left:20px
+  }
+
+  /* Mapbox layer toggle */
+	#menu {
+        background: #fff;
+        font-family: 'Open Sans', sans-serif;
+		font-weight: bold;
+    }
+
+    #menu a {
+        font-size: 13px;
+        color: #404040;
+        margin: 0;
+        padding: 0;
+        padding: 5px;
+		border-radius: 2px;
+        text-align: center;
+		background-color: #D3D3D3;
+    }
+
+    #menu a:last-child {
+		margin-left:10px;
+    }
+
+    #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+    }
+
+    #menu a.active {
+        background-color: #F6931F;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #DD841B;
+    }    
+	
+  
+  h1 {
+    font-size: 20px;
+	margin-top:0
+  }
+  
+  h2 {
+    font-size: 14px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #2DC4B2;
+  }
+  
+  .label {
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  /*Mapbox Legend */
+  .legend {
+	 font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	 background-color: white; 
+  }
+  
+  /* legend test */
+  .legend-container {
+	 position: absolute;
+	 bottom: 0px;
+	 right: 0px;
+	 padding: 0px 10px;
+	 margin-bottom: 30px;
+	 z-index: 1;
+	 max-width: 200px
+  }
+    
+  /* Legend title */
+  .legend h2 {
+    padding-top: 8px;
+	margin:0;
+    text-align: center;
+  }
+
+  .legend p {
+    margin: 0;
+	padding-left:10px;
+	padding-right:10px;
+    text-align: center;
+  }
+
+  .legend hr {
+    color: #123455; 
+    border: 0; 
+    border-top: 1px solid #ccc; 
+    padding: 0; 
+	margin-top:5px;
+	margin-bottom:5px
+  }
+  	 
+  .legend-key {
+	 display: inline-block;
+	 /*size of color key*/
+	 width: 30px; 
+	 height: 15px;
+	 /*position of color key*/
+	 margin-right: 15px; 
+	 margin-left: 10px; 
+  }  
+  
+  /* Customize jQuery Slider UI - Handle color and shape*/  
+  .ui-slider .ui-slider-handle {
+      width: 20px;
+      height: 20px;
+      background: #f6931f;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+  }
+
+  /* Customizing Slider UI - Handle placement along slider to line up*/ 
+  .ui-slider-horizontal .ui-slider-handle {
+      top: 50%;
+      margin-top: -10px;
+  }
+
+  .ui-slider-horizontal {
+      height: 6px;
+  }
+
+  /* Style the counter*/
+  #yearCount{
+      border:0; 
+      color:#f6931f; 
+      font-weight:bold; 
+      font-size:14px;
+	  width:50px
+  }
+  
+  #console > label {
+  font-weight:bold; 
+  font-size:14px;
+  }
+
+  /* Style the legend inside the sliderLegend div */
+  label_scale{
+      display: inline-block;
+      text-align:center;
+      font-size:10px;
+  }
+
+  /* Style the legend inside the sliderLegend div - ensures the first label appears over the slider start */
+  label_scale:first-child{
+      text-align:left;
+      margin-left:-10px;
+      margin-right:10px;
+  }
+
+  /* Style the legend inside the sliderLegend div - ensures the last label appears over the slider end */
+  label_scale:last-child{
+      text-align:right;
+      margin-right:-10px;
+      padding-left:10px;
+  }
+
+  #buttonOpen{
+      text-align: center; 
+      cursor: pointer; 
+      font-weight: bold;
+      margin-left:-20px;
+      margin-right:-20px;
+      margin-top:-9px;
+      padding-top:10px;
+      margin-bottom:-10px;
+      padding-bottom:10px;
+  }
+
+  /* Changes color of the button when mouse hovers over it, helps user identfiy that it is clickable */
+  #buttonOpen:hover { 
+    background-color: #F7F7F7;
+  }
+
+  #infoContainer {
+      text-align: justify; 
+      display: none;  
+	  margin-top:20px;
+	  padding-right:10px;
+	  margin-right:-10px;
+      font-size:14px;
+	  max-height:400px;
+	  overflow:scroll;
+	  overflow-x:hidden;
+  }
+
+  #buttonClose{
+      text-align: center; 
+      cursor: pointer; 
+      display: none; 
+      font-weight:bold; 
+      margin-left:-20px;
+      margin-right:-20px;
+      margin-bottom:-10px;
+      padding-bottom:10px;      
+  }
+
+  #buttonClose:hover { 
+    background-color: #F7F7F7;
+  }	
+	
+  </style>
+
+  </head>
+
+  <body>
+
+  <!-- Bootsrap Navigation Bar  -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <img class="brand" src="http://www.historicalatlas.ca/website/hacolp/images/logo-01.gif" >
+      </div>
+      <div id="navbar1" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="index.htm">Home</a></li>
+          <li><a href="overview.html">Overview</a></li>
+          <li><a href="authors.html">Authors and Sources</a></li>
+          <li><a href="essay.html">Essay From Concise Atlas</a></li>
+          <li class="active" class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Maps<span class="caret"></span></a>
+            <ul class="dropdown-menu pull-right" role="menu">
+             <li><a href="growthmap.html">Population Growth, 1851 - 1961</a></li>
+              <li class="divider"></li>
+              <li class="active"><a href="densitymap.html">Population Density, 1851 - 1961</a></li>
+              <li class="divider"></li>
+              <li><a href="distributionmap.html">Population Distribution, 1851 - 1961</a></li>            
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </nav>
+
+  <!-- Map Container positioned below Bootsrap bar-->
+    <div id="mapboxfull">
+        <div id='map'>
+        </div>
+    </div>
+
+<!-- Bottom left container -->
+<div id='console'>
+  <!-- Title-->
+  <h1>Population Density, 1851-1961</h1>
+  <p>Source: <a href='http://www.historicalatlas.ca/website/hacolp/national_perspectives/population/UNIT_25/index.htm' target="_blank"> Summary of Population Growth 1851-61,</a> Historical Atlas of Canada Online Learning Project</p>
+    
+  <br>
+  <!-- Counter that updates as slider is changed to declare selected value -->
+  <label class="control-label">Time Slider - Census Year:</label>
+  <input type="text"  id="yearCount" readonly>
+    
+  <!-- Spacing -->
+  <br>
+  <br>
+  
+  <!-- jQuery Slider -->
+  <div id="slider" style="width:100%;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
+  
+  <!-- Legend that appears below the slider -->
+  <div id="sliderLegend"></div>
+  
+  <!-- modern geography layer toggle buttons  -->
+  <h2>Modern Geography Reference Layers</h2>
+  <nav id="menu"></nav>
+
+  <!-- Draws a dividing line that spans across the whole console div -->
+  <!-- <hr/> tag defines a thematic break in an HTML page, creates line -->
+  <hr/>
+  
+  <!-- Open Button, when clicked it makes the infoContainer and buttonClose appear, the buttonOpen dissapears -->
+  <div id="buttonOpen" >LEGEND INFO</div>
+
+  <!-- Information Container that contains additional information that is hidden when the page loads. Clicking the buttonOpen button makes it appear. Clicking the buttonClose button makes it disappear. -->
+  <div id="infoContainer">
+  <h1>UNITS</h1>
+  <h2>Area Units:</h2>
+  <p>Areas shown represent provinces/territories/colonies, and within these, census divisions and selected cities are shown.</p>  
+  
+  <h2>Data Units:</h2>
+  <p>Census divisions and selected cities are coloured according to their population density (persons per sq km).</p> 
+  <p><b>Note: First nations people</b> were under-enumerated in all the early censuses, especially in the West. The distribution of native people is better represented using other data sources in the section <b>National Perspectives -> Native Canada.</b></p> 
+
+  <br>
+  <h1>LEGEND DESCRIPTION</h1>
+  <h2>Population Density:</h2>
+  <p>Census divisions and selected cities are coloured according to their population density (persons per sq km).Cities selected had a population of more than 20 000 people in 1961, and first appear as separate from the surrounding census division when their population became greater than 10 000. Note that when a city is shown as a separate area from its surrounding census division, the population of that city is not included in the census division population</p> 
+  
+  <br>
+  <!-- Download Link to .xls file -->
+  <p><b>Data File Download:</b> <a href='http://www.historicalatlas.ca/website/hacolp/national_perspectives/population/UNIT_25/excel/Population_by_CDs_1851_1961.xls'>Population_by_CDs_1851_1961.xls</a></p>
+  </div>
+
+  <!-- Close Button, when clicked it makes the infoContainer dissapear and buttonOpen appear. It is hidden when the page loads. Clicking the buttonOpen button makes it appear. -->
+  <div id="buttonClose"> <hr/>CLOSE</div>
+
+<!-- End of bottom left container contents -->
+</div>
+
+<!-- Bottom right Legend -->
+<div class='legend-container'>
+<div class='legend' id='legend' >
+    <h2>Population Density</h2> <p>in persons per km<sup>2</sup></p>
+    <hr/>
+	
+	<!-- Div where the dynamic legend is created  -->	
+	<div class='legend' id='cd-legend' >
+	</div>
+	
+	<hr/>
+	<!-- <b> tag bolding text -->
+    <p><b>by census division and selected cities</b></p>
+</div>
+</div>
+
+<script>
+//Mapbox GL API Access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYnlyb25tb2xkb2Zza3kiLCJhIjoiY2lrNXh0Y2s1MDBoZnY2a3RldHpwZXlicSJ9.mXxviu6Tv9tq9uPusa1qKg';
+
+    //Declare map options
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/byronmoldofsky/cj2q57drs00302rqm2lsrwjq3',
+        center: [-95.0, 55.0],
+        minZoom: 3,
+        // Layer maxZoom is set to 9 in the maxZoom option below. The map will not zoom in beyond zoom level. 
+        maxZoom:9,
+        zoom: 3
+    });
+
+	// disable map rotation using right click + drag
+	map.dragRotate.disable();
+
+	// disable map rotation using touch rotation gesture
+	map.touchZoomRotate.disableRotation();	
+	
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
+
+	// arrays that will be used to style the layer census division 
+	var breaks = [
+				// stop domain values must appear in ascending order
+				// Pop Dens threshold [0] Color [1]  
+						[0.0, 'rgb(204,204,204)'],
+						[0.0001, 'rgb(255,255,204)'],					
+						[0.5, 'rgb(255,255,102)'],
+						[2.0, 'rgb(255,229,153)'],
+						[4.0, 'rgb(255,204,102)'],
+						[8.0, 'rgb(255,178,0)'],
+						[12.0, 'rgb(204,153,48)'],
+						[20.0, 'rgb(204,102,51)'],
+						[30.0, 'rgb(204,0,0)'],                    
+						[100.0, 'rgb(153,51,51)'],
+						[1000.0, 'rgb(102,51,0)'],
+	];
+	
+	// arrays that will be used to populate the legend 
+	var legendLabels = [
+				// Label text that will appear in the legend [0]
+						['No Population'],
+						['up to 0.5'],
+						['>0.5 - 2'],
+						['>2 - 5'],
+						['>5 - 8'],
+						['>8 - 12'],
+						['>12 - 20'],
+						['>20 - 30'],
+						['>30 - 100'],
+						['>100 - 1 000'],
+						['>1 000 - 10 000'],
+	];	
+	
+	// The slice() method returns the selected elements in an array, as a new array object. The original array will not be changed.
+	// https://www.w3schools.com/jsref/jsref_slice_array.asp
+	// The reverse() method reverses the order of the elements in an array.
+	// https://www.w3schools.com/jsref/jsref_reverse.asp
+	// This is used to reverse the ordering of the legend
+	// The legendsLabels arrays could have been provided in reverse order and not required slice().reverse(). but for this example were provided reversed for consistency
+	 breaksRev = breaks.slice().reverse();
+	 legendLabelsRev = legendLabels.slice().reverse();
+	
+    map.on('load', function() {
+    
+	// Load the legend from the HTML document
+	var legend = document.getElementById('cd-legend'); 
+	
+    // Define map layer, sets a Layer id and options
+    map.addLayer({
+        'id': 'cd-popdensity',
+        'source': {
+        'type': 'vector',
+        'url': 'mapbox://byronmoldofsky.7g9ujcjr'
+		},
+        'source-layer': 'cds_1851_1961_merge_year_WMAS-9rtzuv',
+        'type': 'fill',
+		//sets filter to only display 1851 data in this layer on page load
+        'filter': ['==', 'YEAR_', 1851],
+        'paint': {
+            'fill-color': {
+                // Set polygon fill color based on attribute for population density CDPOPDENS
+                property: 'CDPOPDENS',
+				type : 'interval',
+				// Loading array declared in the breaks variable 
+                stops: breaks,
+                },
+            'fill-opacity': 1
+        }
+      },    
+      // place the layer beneath this layer in the basemap
+	  'admin-2-boundaries-dispute'  
+    );
+	
+	// Create legend and style the key/color
+	// Using Javascript for each method. The forEach() method calls a provided function once for each element in an array, in order.
+	// https://www.w3schools.com/jsref/jsref_forEach.asp
+    breaksRev.forEach(function(layer, i){
+	   
+	   // Creating elements to fill the legend div with id = 'cd-legend' 
+	   // each stop gets a 'row' 
+       var item = document.createElement('div');
+       //add a 'key' to the row. A key will be the color key
+	   var key = document.createElement('span');
+       //add a value variable to the 'row' in the legend
+	   var value = document.createElement('span');
+	   
+	   //the key will take on the shape and style properties defined here, in the HTML
+       key.className = 'legend-key'; 
+       // the background color is retreived from the breaks array
+	   key.style.backgroundColor = layer[1]; 
+
+	   // give the value variable a placeholder id that we can access and update with custom labels
+       value.id = 'legend-value-' + i;
+	   
+	   //add the key (color key) to the legend row
+       item.appendChild(key); 
+       //add the placeholder value to the legend row
+	   item.appendChild(value);
+       // Add row to the legend
+       legend.appendChild(item);        
+    });
+  
+    legendLabelsRev.forEach(function(layer, i){
+	  //as we iterate through the arrays get the correct row, and add the appropriate text 
+      document.getElementById('legend-value-' + i).textContent = layer[0];             
+    });  	
+	
+    // Click to open callout  
+    // When a click event occurs near a feature, open a popup at the location of
+    // the feature, with HTML description from its properties
+	// https://www.mapbox.com/mapbox-gl-js/example/popup-on-click/
+    map.on('click', function(e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['cd-popdensity'] });
+
+        // if the features have no info, return nothing
+        if (!features.length) {
+            return;
+        }
+
+        var feature = features[0];
+
+        // Populate the popup and set its coordinates
+        // based on the feature found
+        var popup = new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+			// using the attribute column names from the Census Division layer
+            .setHTML('<div id="popup" class="popup" style="z-index: 10;"> <h5>' + feature.properties['PROVNAME'] + ', ' +'CD: ' + feature.properties['CDNAME'] + '</h5>' +
+                '<li class="list-group-item"> <b>Population:</b> ' + feature.properties['CDPOP'] + " </li>" +
+                '<li class="list-group-item"> <b>Population Density:</b> ' + feature.properties['CDPOPDENS'] + ' people per km' + " </li>" +
+                '<li class="list-group-item"> <b>Year:</b> ' + feature.properties['YEAR_'] + " </li>" + '</div>')
+            .addTo(map);
+    });   
+
+    // changing the cursor style to 'pointer' when mouse over the Census Division Polygons
+    map.on('mousemove', function(e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['cd-popdensity'] });
+        map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    });
+	
+	// CD boundaries Line/Arc Layer
+    map.addLayer({
+        'id': 'cd-bounds-arc',
+        'type': 'line',
+		'filter': ['==', 'YEAR_', 1851],
+        'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.bbjisli6'
+		},
+        'source-layer': 'cds_1851_1961_arcs_merge_year-9q88va',
+        'layout': {
+            'visibility': 'visible',
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#877b59',
+            'line-width': 1
+        }
+    });
+	
+	// Provincial Boundaries Line/Arc layer
+    map.addLayer({
+        'id': 'provs-bounds-arc',
+        'type': 'line',
+		'filter': ['==', 'YEAR_', 1851],
+        'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.6zorlyrz'
+		},
+        'source-layer': 'boundaries_1851_1961_arcs_mer-1rrn56',
+        'layout': {
+            'visibility': 'visible',
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#ada182',
+            'line-width': 2.5
+        }
+    });	
+	
+	// Provincial Boundaries point/label layer
+	map.addLayer({
+	'id': 'provincial-boundary-label',
+	'type': 'symbol',
+	'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.aajek76z'
+		},
+	'source-layer': 'boundaries_1851_1961_cent_mer-73ngaf',	
+	'filter': ['==', 'YEAR_', 1851],
+	'layout': {
+		'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+		'text-size': 10,
+		'text-field': '{PROV_NAME}',
+        'text-anchor': 'center',
+		'text-transform': 'uppercase',
+        'text-letter-spacing': 0.2,
+        'text-offset': [0, 1.5]
+	},
+	'paint':{
+		'text-halo-color': '#FFFFFF',
+		'text-halo-width': 1,
+		'text-halo-blur' :1,
+		'text-opacity': 1,
+	},	
+	}); 	
+	
+	// Modern Places point/label layer
+	map.addLayer({
+	'id': 'Cities',
+	'type': 'symbol',
+	'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.3eeu2xh7'
+		},
+	'source-layer': 'MG_Modern_pop_place_WMAS-8p75by',	
+	'layout': {
+		'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+		'text-size': 10,
+		'text-field': '{NAME_COMMO}',
+		'visibility': 'none',	
+	},
+	'paint':{
+		'text-halo-color': '#FFFFFF',
+		'text-halo-width': 1,
+		'text-halo-blur' :1,
+		'text-opacity': 0.8,
+	},
+	},
+	// Place below provincial boundary label layer
+	'provincial-boundary-label'); 
+	
+	// Modern Bound Line/Arc
+	    map.addLayer({
+        'id': 'Political Boundaries',
+        'type': 'line',
+        'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.1zwa80ic'
+		},
+        'source-layer': 'MG_Modern_Bound_WMAS-8b8amf',
+        'layout': {
+		// visibility set to none to hide when map loads
+            'visibility': 'none',
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#FFCC00',
+            'line-width': 2,
+			'line-opacity': 0.8
+        }
+    });
+  
+    //jQuery Slider Widget http://api.jqueryui.com/slider/
+    $( "#slider" ).slider({
+		// Value is the default location of handle on slider
+        value:1851,
+		// Min is the minimum value of the slider
+        min: 1851,
+		// Max is the maximum value of the slider
+        max: 1961,
+		// Step determines the size or amount of each interval or step the slider takes between the min and max.
+        step: 10,
+        // Change event captures when the the slider handle HAS MOVED location. Change event only updates/captured after the slider handle is moved.
+		// https://api.jqueryui.com/slider/#event-change
+        change: function( event, ui ) {
+          // update the year counter based on the location/value of the handle on the slider
+          $( "#yearCount" ).val( ui.value );
+          // runs filter query on Mapbox layer based on the location/value of the handle on the slider
+          map.setFilter('cd-popdensity', ['==', 'YEAR_', ui.value]);
+    		  map.setFilter('cd-bounds-arc', ['==', 'YEAR_', ui.value]);
+    		  map.setFilter('provs-bounds-arc', ['==', 'YEAR_', ui.value]);
+    		  map.setFilter('provincial-boundary-label', ['==', 'YEAR_', ui.value]);
+          //If a popup is open when the slider is used then popup is hidden
+          if (popup = new mapboxgl.Popup()) {
+          $(".mapboxgl-popup").hide();
+          }
+        },
+        // Slide event captures when the the slider handle IS BEING MOVED location. Slide event updates/captured while the slider handle is being moved. 
+		// https://api.jqueryui.com/slider/#event-slide
+        slide: function( event, ui ) {
+          // update the year counter based on the location/value of the handle on the slider
+          $( "#yearCount" ).val( ui.value ); 
+          // runs filter query on Mapbox layer based on the location/value of the handle on the slider
+          map.setFilter('cd-popdensity', ['==', 'YEAR_', ui.value]);
+    		  map.setFilter('cd-bounds-arc', ['==', 'YEAR_', ui.value]);
+    		  map.setFilter('provs-bounds-arc', ['==', 'YEAR_', ui.value]);
+    		  map.setFilter('provincial-boundary-label', ['==', 'YEAR_', ui.value]);
+        }
+    });
+
+    // yearCount value, required to replace default value when the page loads
+    $( "#yearCount" ).val( $( "#slider" ).slider( "value" ) );
+
+    // The below code creates a legend below the slider so the user knows what year is selected
+    // the itemes variable is an array of the labels that will be placed under the slider
+	// To update the legend ONLY the items variable needs to be updated
+	// The number of items must mach number of intervals, this example there are 12 = start, end and 10 stops
+	// Start and end items must match the min and max declared for the slider
+    var items =[ '1851','1861','1871','1881','1891','1901','1911','1921','1931','1941','1951','1961'];
+
+    // Calculate the legth of the legend based on number of items declared to identify spacing required
+    // Do not change when updating the items variable
+	var length = 100 / (items.length - 1);
+    $.each(items, function(key,value){
+     
+	 var spacing = length;
+      if(key === 0 || key === items.length-1)
+      spacing = length/2;
+      
+    // Updates sliderLegend div below the slider using spacing variable to set calculated label spacing width and include label value for the label
+    // Do not change when updating the items variable
+	  $("#sliderLegend").append("<label_scale style='width: "+spacing+"%'>"+value+"</label_scale>");
+    });
+	
+    // Using jQuery to create buttons and control behaviour when buttons are clicked 
+	// Button open info div using jQuery toggle() method 
+	// http://api.jquery.com/toggle/. 
+	// With no parameters, the .toggle() method simply toggles the visibility of elements
+    $(document).ready(function(){
+	// declaring the div to listen for click event
+    $("#buttonOpen").click(function(){
+	  // declaring action when that div is clicked, hide #buttonOpen, display #buttonClode and #infoContainer
+      $("#buttonOpen").toggle();
+      $("#buttonClose").toggle();
+      $("#infoContainer").toggle(); 
+    });
+    
+    // Button close info div using jQuery. Reverse of what is declared above
+	// when clicking #button close hide #buttonClose and #infoContainer, display #buttonOpen
+    $("#buttonClose").click(function(){
+      $("#buttonOpen").toggle();
+      $("#buttonClose").toggle();
+      $("#infoContainer").toggle();  
+    });  
+    });   
+});
+
+	// Layer toggle 
+	// Based on Mapbox example: https://www.mapbox.com/mapbox-gl-js/example/toggle-layers/
+	// the values in the array must match the layerID of the layer you want to toggle that is set when declaring the layers above. 
+	// Important to consider that the layerID text in the below array is how it will appear in the label, so set layerID as you want it displayed when declaring the layer
+	var toggleableLayerIds = [ 'Cities', 'Political Boundaries',  ];
+
+	for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'none';
+    link.textContent = id;
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+	
+	var layersToggle = document.getElementById('menu');
+    layersToggle.appendChild(link);
+	};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>Historical Atlas of Canada</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  
+    <!-- Mapbox -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+
+    /* Full Screen Mapbox + Navbar edits */
+
+    html, body {
+    height:100%;
+    width: 100%;      
+    } 
+
+    #mapboxfull {
+      height: 100%;
+      min-height: 100%;
+      margin:0;  
+      box-sizing: border-box;
+      padding-top:55px;
+      z-index:1;
+      position:relative;
+    }
+
+    #map {
+      height:100%; 
+      width:100%
+    }
+
+  </style>
+
+  </head>
+
+  <body>
+
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <img class="brand" src="http://www.historicalatlas.ca/website/hacolp/images/logo-01.gif" >
+      </div>
+      <div id="navbar1" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="index.htm">Home</a></li>
+          <li><a href="overview.html">Overview</a></li>
+          <li class="active"><a href="authors.html">Authors and Sources</a></li>
+          <li><a href="essay.html">Essay From Concise Atlas</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Maps<span class="caret"></span></a>
+            <ul class="dropdown-menu pull-right" role="menu">
+               <li><a href="growthmap.html">Population Growth, 1851 - 1961</a></li>
+              <li class="divider"></li>
+              <li><a href="densitymap.html">Population Density, 1851 - 1961</a></li>
+              <li class="divider"></li>
+              <li><a href="distributionmap.html">Population Distribution, 1851 - 1961</a></li>               
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </nav>
+
+<!--Authors and Sources-->
+  <div class="container sources">
+    <div class="row centered mt mb">
+    <div class="col-lg-8 col-lg-offset-2">
+      <h2>AUTHORS</h2>
+      <p><b>Population Composition 1891-1961 (Volume III, Plate 4; Concise Plate 18)</b> 
+      <br>
+      DONALD CARTWRIGHT Geography, University of Western Ontario
+      <br>
+      MURDO MacPHERSON Historical Atlas of Canada, Toronto</p>
+      
+      <p><b>Population in the Canadas and the Maritimes to 1851 (Volume II, Plate 10; Concise, Plate 13)</b> 
+      <br>
+      BRIAN S. OSBORNE Department of Geography, Queen's University
+      <br>
+      JEAN-CLAUDE ROBERT Department Histoire, Université du Québec à Montréal
+      <br>
+      DAVID A. SUTHERLAND Department of History, Dalhousie University</p>
+      
+      <p><b>The Canadian Population, 1871; 1891 (Volume II, Plate 29; Concise, Plate 14)</b> 
+      <br>
+      DON MEASNER Historical Atlas of Canada
+      <br>
+      CHRISTINE HAMPSON Department of Geography, Brock University</p>
+      
+      <p>
+      <b>Note: This chapter has been specially compiled for the online version. Selected research files from the plates listed above have been used, as well as new research. Sources are listed only for the components used.</b> 
+      </br>
+      <b>Note: First nations people</b> were under-enumerated in all the early censuses, especially in the West. The distribution of native people is better represented using other data sources in the section National Perspectives -> Native Canada.
+      </p>
+      
+      <p>Compiled by: Byron Moldofsky</p>
+      
+      <h2>SOURCES</h2>
+      <p>Population Growth, 1851-1961 (Interactive Map) 
+      <br>
+      Population Density, 1851-1961 (Interactive Map) 
+      <br>
+      Population Distribution, 1851-1961 (Interactive Map)</p>
+
+      <p>All these maps use the same sets of data compiled from the censuses of Canada and the British colonies before confederation. In the Population Distribution map, dots are plotted in a random manner within the known settled area (ecumene) rather than specifically where people were located. The settled area is approximate and representative, and population was scattered throughout the rest of the country as well. Where census data did not exist for the date of the map for some areas, the closest census date available was used. Note: The original published sources are listed here.</p>
+
+      <p>Many of these published volumes are now available online at the websites of: Library and Archives of Canada, Statistics Canada, and Early Canadiana Online. See Related Links.</p>
+
+      <ul>
+        <li>
+        Canada. Censuses of Canada, 1665 to 1871, Statistics of Canada, Volume IV. 1876. 
+        <br>Selected summary tables available on E-STAT, Statistics Canada website.
+        </li>
+
+        <li>
+        Canada. Census of the Canadas. 1851. Vol 1, Personal Census. pp xvi-xix.
+        </li>
+
+        <li>
+        New Brunswick. Census. 1851
+        </li>
+        
+        <li>
+        Nova Scotia. Census. 1851
+        </li>
+        
+        <li>
+        Prince Edward Island. Census. 1848
+        </li>
+        
+        <li>
+        Newfoundland. Census. 1857
+        </li>
+        
+        <li>
+        Canada. Census of the Canadas. 1861. Vol 1, Personal Census. pp 42-3, 78-9.
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1870-71. 1873. Vol 1, Table 2, Table 5, Table 6
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1880-81. 1882. Vol 1, Table 5, Table 6
+        </li>
+        
+        <li>
+        Newfoundland. Census. 1884.
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1890-91. 1893. Vol 1, Table 2, Table 6
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1901. Sessional Papers 1903. Vol 1, Table 1, Table 2, Table 5
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1911. Vol 1, Table 1, Table 14
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1921. Vol 1, Table 10, Table 27
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1931. Vol 2, Table 6, Table 7, Table 12
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1941. Vol 1, Table 1, Table 4, Table 7
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1951. Vol 1, Table 2, Table 3
+        </li>
+        
+        <li>
+        Canada. Census of Canada, 1961. Vol 1, Part 1, Series 1.1, No. 11, Table 2, Table 3
+        </li>
+        
+        <li>
+        F. H. Leacy, editor. Historical Statistics of Canada, 2nd edition. Series A2-14.
+        </li>
+      </ul>     
+  
+    </div>                
+    </div>            
+    </div><!--/row -->
+  </div><!--/container -->
+
+    <!-- Bootstrap
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

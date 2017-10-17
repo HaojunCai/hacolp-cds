@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>Historical Atlas of Canada</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  
+    <!-- Mapbox -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+
+    /* Full Screen Mapbox + Navbar edits */
+
+    html, body {
+    height:100%;
+    width: 100%;      
+    } 
+
+    #mapboxfull {
+      height: 100%;
+      min-height: 100%;
+      margin:0;  
+      box-sizing: border-box;
+      padding-top:55px;
+      z-index:1;
+      position:relative;
+    }
+
+    #map {
+      height:100%; 
+      width:100%
+    }
+
+  </style>
+
+  </head>
+
+  <body>
+
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <img class="brand" src="http://www.historicalatlas.ca/website/hacolp/images/logo-01.gif" >
+      </div>
+      <div id="navbar1" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="index.htm">Home</a></li>
+          <li class="active"><a href="overview.html">Overview</a></li>
+          <li><a href="authors.html">Authors and Sources</a></li>
+          <li><a href="essay.html">Essay From Concise Atlas</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Maps<span class="caret"></span></a>
+            <ul class="dropdown-menu pull-right" role="menu">
+              <li><a href="growthmap.html">Population Growth, 1851 - 1961</a></li>
+              <li class="divider"></li>
+              <li><a href="densitymap.html">Population Density, 1851 - 1961</a></li>
+              <li class="divider"></li>
+              <li><a href="distributionmap.html">Population Distribution, 1851 - 1961</a></li>              
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </nav>
+
+  <!--Overview-->
+  <div class="container overview">
+    <div class="row centered mt mb" >
+    <div class="col-lg-8 col-lg-offset-2">
+      <h1>OVERVIEW</h1>
+
+      <p>These three maps all use the same sets of data compiled from the censuses of Canada, and for the British colonies before confederation, and cover the same time span, 1851 - 1961. However, each of them shows population growth in a different way. Together, they are a good illustration of how information can be mapped in different ways, to tell different stories.</p>
+
+      <p>In all of the maps, population is aggregated by census division, and these are quite large areas. Much of the variation between the maps results from the way these "data units" are represented on the map.</p>
+
+      <p>In the interactive map of Population Growth, 1851-1961, each census division is represented by a circle proportional to its population size. Major cities are also shown as circles, just like any other census division, so that one gets a good comparative picture of overall growth by region. However, these circles are randomly located in the centre of the census division. In large rural divisions, such as in the far north of most provinces, and in the Territories, these do not present a very realistic picture of the location of population.</p>
+
+      <p>The map of Population Density attempts to overcome this shortcoming by calculating density of population, i.e. number of people divided by the area they are spread through, in square km - in this case, the area of the census division. The values are classed, and then the census divisions are colour-coded according to their overall population density, from high to low values - technically, a "choropleth" map. This kind of map tells the story of increasing rural population and land utilization very well. In the interactive map, zooming in on the Prairies, and flipping through the maps year by year shows increasingly dark colours in increasingly small census divisions over the century, as agriculture-based settlement spreads through the land. The setbacks of the Depression show up as a reversal of this general trend in parts of the southern prairies, in the 1941 census. However, on this map, urban growth gets lost - because the cities are relatively small in area, they are scarcely visible despite growing urban population throughout the period.</p>
+
+      <p>The design developed for the Population Distribution map series tries to overcome both these drawbacks, to some extent. A dot distribution map uses one dot to represent every 300 people; dots are plotted in a random manner within the known settled area (ecumene). Although the settled area mapped at these scales is very approximate, and population was scattered throughout the rest of the country as well, it does give a better picture of where people were located than the circle map. Cities still do not show up very well using the dot mapping method, so this interactive map allows one to turn on a map layer of the major cities, shown as sized squares, on top of the dot base maps. By this combination of methods the viewer can customize the map to his or her wishes - to a limited degree.</p>
+
+      <p>Three maps all made with the same data therefore can tell 3 very different stories. Like statistics, or descriptive prose, they serve a purpose; two maps of the same data can be correct, without being equal. The method of mapping and the map's graphic design allow the cartographer to emphasize certain information to achieve the map's purpose. For these maps, the raw numbers are also available as a data table, which users can download from the Legend Info pages, to create their own view of population growth.</p>
+
+      <p>Note: First nations people were under-enumerated in all the early censuses, especially in the West. The distribution of native people is better represented using other data sources in the section National Perspectives -> Native Canada.</p>
+                       
+    </div>            
+    </div><!--/row -->
+  </div><!--/container -->
+
+    <!-- Bootstrap
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

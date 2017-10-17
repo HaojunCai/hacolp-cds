@@ -1,0 +1,442 @@
+/* ==========================================================================
+   Base Styles, Bootstrap Modifications & Fonts Import
+   ========================================================================== */
+
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,500,600,700);
+
+
+::-moz-selection {
+    background: #f2c2c9;
+    color: #a4003a;
+    text-shadow: none;
+}
+
+::selection {
+    background: #16a085;
+    color: #a4003a;
+    text-shadow: none;
+}
+
+/*
+ * A better looking default horizontal rule
+ */
+
+ hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.mt {
+	margin-top: 80px;
+}
+
+.mb {
+	margin-bottom: 80px;
+}
+
+/* ==========================================================================
+   General styles
+   ========================================================================== */
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px){
+  #left {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    width: 25%;
+    overflow-y: scroll; 
+  }
+  
+  #right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+    width: 75%;
+  }
+}
+
+#left {
+  height:100%;
+  border-right:2px solid black;;
+}
+
+#right {
+  height:100%;
+  text-align: center;
+}
+
+h1, h2, h4, h5, h6 {
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+h3{
+  font-weight: 400;
+  font-size:1.1em;
+  color: #4a4a4a;
+  text-align: justify;
+}
+
+p{
+	text-align: justify;
+	font-size:0.9em;
+}
+
+a{
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  h3{ 
+  padding: 20px;
+  }  
+
+  p{
+  padding-left: 20px;
+  padding-right: 20px;
+  }
+
+  li{
+  padding-left: 20px;
+  padding-right: 20px;
+  }
+}
+
+ul{
+	text-align: justify;
+	font-size:0.9em;
+}
+
+#navbar1 > ul > li.dropdown.open > ul > li.active > a {
+  font-weight: 900;
+  background-color: transparent;
+  color: #4a4a4a;
+}
+
+.navbar-default {
+      padding-bottom:56px;
+      z-index:2;
+      position:fixed;
+      width:100%;
+      background: #162E16;
+      border:0;
+}
+
+#navbar1 > ul > li.dropdown.open > a {
+  background: #162E16;
+}
+
+#navbar1 {
+  background: #162E16;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+	color: #191919;
+	background-color: transparent;
+	border-bottom: 2px solid #191919
+}
+
+.navbar-default .navbar-nav > li > a {
+	color: #FFFFFF;
+}
+
+#navbar1 > ul > li.active.open > ul {
+	z-index:1000000
+}
+
+#navbar1 > ul > li.active > a {
+  padding-bottom:6px;
+  color: #FFFFFF;
+}
+
+#navbar1 > ul > li.active.open > ul > li.active > a {
+	font-weight: 800;
+	background-color: #FFFFFF;
+	color: #191919;
+}
+
+#navbar1 > ul > li.active.open > a {
+	margin-bottom:12px
+}
+
+/* Logo */
+.brand {
+  padding-top:0;
+  left: 0;
+  position: fixed;
+  background: #FFFFFF;
+  z-index:5;
+}
+
+/* navigation bar */ 
+.container-fluid {
+  right:0px;
+  position: fixed;
+  z-index:10;
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+      background: #FFFFFF;
+    }
+}
+
+body > nav > div > div.navbar-header {
+background: #162E16;
+}
+
+body > nav > div > div.navbar-header > button {
+  z-index:100;
+  background: #FFFFFF;
+  padding-bottom:15px;
+}
+
+#navbar1 > ul > li.dropdown > a {
+  color: #FFFFFF;
+}
+
+#navbar1 > ul > li > a:hover {
+  color: #B8B8B8;
+}
+
+.dropdown-menu {
+  left:0;
+}
+
+#navbar1 > ul > li.dropdown.open > a {
+  padding-bottom:20px;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  font-weight: 500;
+  font-size:14px;  
+  color: #FFFFFF;
+  border-bottom: 1px solid #FFFFFF;
+  padding-left:0;
+  padding-right:0
+}
+
+#navbar1 > ul > li > a {
+  font-weight: 500;
+  font-size:14px;  
+  color: #FFFFFF;
+  padding-left:10px;
+  padding-right:10px
+}
+
+
+/* ==========================================================================
+   Wrap Sections
+   ========================================================================== */
+
+#headerwrap {
+	height:350px;
+	width: 100%;
+	z-index:1;
+	position:relative;
+}
+
+#headerwrap h1 {
+	color:#ffffff;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	letter-spacing: 2px;
+	font-size: 60px;
+	font-weight: bold;
+
+}
+
+#headerwrap h4 {
+	font-weight: 200;
+	color: #ffffff
+}
+
+#social {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	background-color: #f2f2f2;
+}
+
+#social i {
+	font-size: 40px;
+	color: #4a4a4a
+}
+
+#social i:hover {
+	color: #FFB732
+}
+
+#social .centered {
+	text-align: center
+}
+
+#footerwrap {
+	padding-top: 70px;
+	padding-bottom: 50px;
+	background-color: #2f2f2f;
+}
+
+#footerwrap p {
+	color: #f2f2f2;
+	margin-left: 10px;
+}
+
+#workwrap {	
+	background: url(../img/work.jpg) no-repeat center top;
+	margin-top: -70px;
+	padding-top: 250px;
+	text-align:center;
+	background-attachment: relative;
+	background-position: center center;
+	min-height: 650px;
+	width: 100%;
+	
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#workwrap h1 {
+	color:#ffffff;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	letter-spacing: 4px;
+	font-size: 80px;
+	font-weight: bold;
+}
+
+#workwrap h4 {
+	font-weight: 400;
+	color: #ffffff
+}
+
+#aboutwrap {	
+	background: url(../img/about.jpg) no-repeat center top;
+	margin-top: -70px;
+	padding-top: 250px;
+	text-align:center;
+	background-attachment: relative;
+	background-position: center center;
+	min-height: 550px;
+	width: 100%;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.text {
+    position: absolute;
+    color:#f00;
+    background-color:rgba(255,255,255,0.8);
+    height: 100%;
+    left:0;
+    right:0;
+    padding-right: 15px;
+    padding-left: 15px;
+    text-align: center;
+    z-index: 0;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+      .text{
+      padding-right: 15px;
+      padding-left: 15px;  
+      display:none;  
+      }
+}
+
+.text:hover {
+    opacity:1;
+}
+
+.text a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+}
+
+.text h2 {
+    font-weight:600;
+}
+
+.textmobile {
+    display:none;
+}
+
+	.brand_div{
+	padding-top:5px;	
+	padding-right: 10px;
+	}
+
+@media (max-width: 768px) {
+    .textmobile{
+    position: absolute;
+    color:#f00;
+    background-color:rgba(255,255,255,0.8);
+    height: 100%;
+    width:95%;
+    line-height:100px;
+    padding-right:30px;
+    text-align: center;
+    z-index: 0;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    }
+	
+	.brand_div{
+	width:70%;	
+	}
+}
+
+/* Gallery */
+.gallery {
+	margin-top: 30px;
+}
+
+.gallery img {
+	z-index:1;
+}
+
+
+
+

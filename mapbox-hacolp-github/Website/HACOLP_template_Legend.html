@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>Historical Atlast of Canada</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+    
+    <!-- Mapbox -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+
+    /* Full Screen Mapbox + Navbar edits */
+
+    html, body {
+    height:100%;
+    width: 100%; 
+    margin:0;
+    overflow:hidden;     
+    } 
+
+    #map {
+      height:100%; 
+      width:100%
+    }
+	
+  /*Container bottom left*/
+  #console {
+    position: absolute;
+    width: 420px;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: white;
+	bottom:20px;
+	z-index:10000;
+  }
+
+  #console hr {
+    margin-left:-20px; 
+    margin-right:-20px;  
+    color: #123455; 
+    height: 1px; 
+    border: 0; 
+    border-top: 1px solid #ccc; 
+    padding: 0; 
+  }
+  
+  .mapboxgl-popup {
+    max-width: 400px;
+
+  }
+
+  .mapboxgl-popup-content {
+    margin:0;
+    padding:10px;
+    padding-bottom: 0;
+  }
+
+  .mapboxgl-popup-content h5{
+    margin:0;
+    font-size:15px;
+    margin-right:15px;
+    margin-bottom:5px;
+  }
+  
+  #popup > li {
+	border:0;
+	padding:0;
+	margin:0;
+	margin-left:20px
+  }
+
+  
+  h1 {
+    font-size: 20px;
+	margin-top:0
+  }
+  
+  h2 {
+    font-size: 14px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #2DC4B2;
+  }
+  
+  .label {
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  /*Mapbox Legend */
+  .legend {
+	 font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	 background-color: white; 
+  }
+  
+  /* legend test */
+  .legend-container {
+	 position: absolute;
+	 bottom: 0px;
+	 right: 0px;
+	 padding: 0px 10px;
+	 margin-bottom: 30px;
+	 z-index: 1;
+	 max-width: 200px
+  }
+    
+  /* Legend title */
+  .legend h2 {
+    padding-top: 8px;
+	margin:0;
+    text-align: center;
+  }
+
+  .legend p {
+    margin: 0;
+	padding-left:10px;
+	padding-right:10px;
+    text-align: center;
+  }
+
+  .legend hr {
+    color: #123455; 
+    border: 0; 
+    border-top: 1px solid #ccc; 
+    padding: 0; 
+	margin-top:5px;
+	margin-bottom:5px
+  }
+  	 
+  .legend-key {
+	 display: inline-block;
+	 /*size of color key*/
+	 width: 30px; 
+	 height: 15px;
+	 /*position of color key*/
+	 margin-right: 15px; 
+	 margin-left: 10px; 
+  }  
+	
+  </style>
+
+  </head>
+
+  <body>
+
+  <!-- Map Container positioned below Bootsrap bar-->
+  <div id='map'>
+  </div>
+
+<!-- Bottom right Legend -->
+<div class='legend-container'>
+<div class='legend' id='legend' >
+    <h2>Population Density</h2> <p>in persons per km<sup>2</sup></p>
+    <hr/>
+<div class='legend' id='cd-legend' >
+</div>
+	<hr/>
+	<!-- <b> tag bolding text -->
+    <p><b>by census division and selected cities</b></p>
+</div>
+</div>
+
+<script>
+//Mapbox GL API Access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYnlyb25tb2xkb2Zza3kiLCJhIjoiY2lrNXh0Y2s1MDBoZnY2a3RldHpwZXlicSJ9.mXxviu6Tv9tq9uPusa1qKg';
+
+    //Declare map options
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/byronmoldofsky/cj2q57drs00302rqm2lsrwjq3',
+        center: [-95.0, 55.0],
+        minZoom: 3,
+        // Layer maxZoom is set to 9 below, will not display beyond zoom level. Prevents the map view from zooming beyong that point as well
+        maxZoom:9,
+        zoom: 3
+    });
+
+	// disable map rotation using right click + drag
+	map.dragRotate.disable();
+
+	// disable map rotation using touch rotation gesture
+	map.touchZoomRotate.disableRotation();	
+	
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
+
+	// arrays that will be used to style the layer census division 
+	var breaks = [
+				// stop domain values must appear in ascending order
+				// Pop Dens threshold [0] Color [1]  
+						[0.0, 'rgb(204,204,204)'],
+						[0.0001, 'rgb(255,255,204)'],					
+						[0.5, 'rgb(255,255,102)'],
+						[2.0, 'rgb(255,229,153)'],
+						[4.0, 'rgb(255,204,102)'],
+						[8.0, 'rgb(255,178,0)'],
+						[12.0, 'rgb(204,153,48)'],
+						[20.0, 'rgb(204,102,51)'],
+						[30.0, 'rgb(204,0,0)'],                    
+						[100.0, 'rgb(153,51,51)'],
+						[1000.0, 'rgb(102,51,0)'],
+	];
+	
+	// arrays that will be used to populate the legend 
+	var legendLabels = [
+				// Label text that will appear in the legend [0]
+						['No Population'],
+						['up to 0.5'],
+						['>0.5 - 2'],
+						['>2 - 5'],
+						['>5 - 8'],
+						['>8 - 12'],
+						['>12 - 20'],
+						['>20 - 30'],
+						['>30 - 100'],
+						['>100 - 1 000'],
+						['>1 000 - 10 000'],
+	];	
+	
+	// The slice() method returns the selected elements in an array, as a new array object. The original array will not be changed.
+	// https://www.w3schools.com/jsref/jsref_slice_array.asp
+	// The reverse() method reverses the order of the elements in an array.
+	// https://www.w3schools.com/jsref/jsref_reverse.asp
+	// This is used to reverse the ordering of the legend
+	// The legendsLabels arrays could have been provided in reverse order and not required slice().reverse(). but for this example were provided reversed for consistency
+	 breaksRev = breaks.slice().reverse();
+	 legendLabelsRev = legendLabels.slice().reverse();
+	
+    map.on('load', function() {
+    
+	// Load the legend from the HTML document
+	var legend = document.getElementById('cd-legend'); 
+	
+    // Define map layer, sets a Layer id and options
+    map.addLayer({
+        'id': 'cd-popdensity',
+        'source': {
+        'type': 'vector',
+        'url': 'mapbox://byronmoldofsky.7g9ujcjr'
+		},
+        'source-layer': 'cds_1851_1961_merge_year_WMAS-9rtzuv',
+        'type': 'fill',
+        'filter': ['==', 'YEAR_', 1851],
+        'paint': {
+            'fill-color': {
+                // Set polygon fill color based on attribute for population density CDPOPDENS
+                property: 'CDPOPDENS',
+				type : 'interval',
+				// Loading array declared in the breaks variable 
+                stops: breaks,
+                },
+            'fill-opacity': 1
+        }
+      },    
+      // place the layer beneath this layer in the basemap
+	  'admin-2-boundaries-dispute'  
+    );
+	
+	// Create legend and style the key/color
+	// Using Javascript for each method. The forEach() method calls a provided function once for each element in an array, in order.
+	// https://www.w3schools.com/jsref/jsref_forEach.asp
+    breaksRev.forEach(function(layer, i){
+	   
+	   // Creating elements to fill the legend div with id = 'cd-legend' 
+	   // each stop gets a 'row' 
+       var item = document.createElement('div');
+       //add a 'key' to the row. A key will be the color key
+	   var key = document.createElement('span');
+       //add a value variable to the 'row' in the legend
+	   var value = document.createElement('span');
+	   
+	   //the key will take on the shape and style properties defined here, in the HTML
+       key.className = 'legend-key'; 
+       // the background color is retreived from the breaks array
+	   key.style.backgroundColor = layer[1]; 
+
+	   // give the value variable a placeholder id that we can access and update with custom labels
+       value.id = 'legend-value-' + i;
+	   
+	   //add the key (color key) to the legend row
+       item.appendChild(key); 
+       //add the placeholder value to the legend row
+	   item.appendChild(value);
+       // Add row to the legend
+       legend.appendChild(item);        
+    });
+  
+    legendLabelsRev.forEach(function(layer, i){
+	  //as we iterate through the arrays get the correct row, and add the appropriate text 
+      document.getElementById('legend-value-' + i).textContent = layer[0];             
+    });  	
+	
+    // Click to open callout  
+    // When a click event occurs near a feature, open a popup at the location of
+    // the feature, with HTML description from its properties
+    map.on('click', function(e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['cd-popdensity'] });
+
+        // if the features have no info, return nothing
+        if (!features.length) {
+            return;
+        }
+
+        var feature = features[0];
+
+        // Populate the popup and set its coordinates
+        // based on the feature found
+        var popup = new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+			// Census Division
+            .setHTML('<div id="popup" class="popup" style="z-index: 10;"> <h5>' + feature.properties['PROVNAME'] + ', ' +'CD: ' + feature.properties['CDNAME'] + '</h5>' +
+                '<li class="list-group-item"> <b>Population:</b> ' + feature.properties['CDPOP'] + " </li>" +
+                '<li class="list-group-item"> <b>Population Density:</b> ' + feature.properties['CDPOPDENS'] + ' people per km' + " </li>" +
+                '<li class="list-group-item"> <b>Year:</b> ' + feature.properties['YEAR_'] + " </li>" + '</div>')
+            .addTo(map);
+    });   
+
+    // Use the same approach as above to indicate that the Census Division polygon areas are clickable
+    // by changing the cursor style to 'pointer' when mouse over the Census Division Polygons
+    map.on('mousemove', function(e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['cd-popdensity'] });
+        map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    });
+	
+	// CD boundaries Line/Arc Layer
+    map.addLayer({
+        'id': 'cd-bounds-arc',
+        'type': 'line',
+		'filter': ['==', 'YEAR_', 1851],
+        'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.bbjisli6'
+		},
+        'source-layer': 'cds_1851_1961_arcs_merge_year-9q88va',
+        'layout': {
+            'visibility': 'visible',
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#877b59',
+            'line-width': 1
+        }
+    });
+	
+	// Provincial Boundaries Line/Arc layer
+    map.addLayer({
+        'id': 'provs-bounds-arc',
+        'type': 'line',
+		'filter': ['==', 'YEAR_', 1851],
+        'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.6zorlyrz'
+		},
+        'source-layer': 'boundaries_1851_1961_arcs_mer-1rrn56',
+        'layout': {
+            'visibility': 'visible',
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#ada182',
+            'line-width': 2.5
+        }
+    });	
+	
+	// Provincial Boundaries point/label layer
+	// byronmoldofsky.aajek76z
+	// boundaries_1851_1961_cent_mer-73ngaf
+	// Symbol Layer, added to the mapbox style
+	map.addLayer({
+	'id': 'provincial-boundary-label',
+	'type': 'symbol',
+	'source': {
+			type: 'vector',
+			url: 'mapbox://byronmoldofsky.aajek76z'
+		},
+	'source-layer': 'boundaries_1851_1961_cent_mer-73ngaf',	
+	'filter': ['==', 'YEAR_', 1851],
+	'layout': {
+		'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+		'text-size': 10,
+		'text-field': '{PROV_NAME}',
+        'text-anchor': 'center',
+		'text-transform': 'uppercase',
+        'text-letter-spacing': 0.2,
+        'text-offset': [0, 1.5]
+	},
+	'paint':{
+		'text-halo-color': '#FFFFFF',
+		'text-halo-width': 1,
+		'text-halo-blur' :1,
+		'text-opacity': 1,
+	},	
+	}); 	
+	  
+});
+
+</script>
+
+</body>
+</html>
